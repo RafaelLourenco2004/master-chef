@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ReceiptLine {
+public class RecipeLine {
     
-    private Ingredient ingredient;
-    private Unit unit;
+    private String ingredient;
+    private Double amount;
+    private String unit;
 
 }

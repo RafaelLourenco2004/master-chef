@@ -1,11 +1,11 @@
 package com.example.demo.model;
 
 import java.util.List;
-
 import lombok.Getter;
 
 @Getter
-public class Receipt {
+public class Recipe {
     
-    private List<ReceiptLine> lines;
+    private String name;
+    private List<RecipeLine> lines;
 }
