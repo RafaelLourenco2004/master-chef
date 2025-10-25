@@ -1,4 +1,4 @@
-package com.example.demo.adapters;
+package com.example.demo.adapters.agents;
 
 import java.util.List;
 import java.util.Map;
@@ -15,14 +15,14 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 @Service
-public class ChefAgentGitHubModels implements ChefAgent {
+public class ChefAgent implements Agent {
 
     private final String TOKEN = System.getenv("TOKEN");
-    private final String URL = "https://models.github.ai/inference/chat/completions";
+    private final String URL = System.getenv("URL");
    
     private OkHttpClient client;
 
-    public ChefAgentGitHubModels() {
+    public ChefAgent() {
         client = new OkHttpClient();
     }
 
@@ -32,7 +32,7 @@ public class ChefAgentGitHubModels implements ChefAgent {
                 "model", "openai/gpt-4.1-nano",
                 "response_format", Map.of(
                         "type", "json_schema",
-                        "json_schema", JsonSchema.RecipetSchema()),
+                        "json_schema", JsonSchema.getRecipetSchema()),
                 "messages", List.of(
                         Map.of(
                                 "role", "user",

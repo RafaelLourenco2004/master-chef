@@ -7,12 +7,18 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Utils.JsonParsing;
-import com.example.demo.adapters.ChefAgent;
+import com.example.demo.adapters.agents.Agent;
+import com.example.demo.adapters.filters.FilterManager;
+import com.example.demo.adapters.filters.FilterManagerImpl;
+import com.example.demo.adapters.filters.RecipeFilter;
 import com.example.demo.model.Recipe;
 import com.example.demo.model.exceptions.InvalidApiResponseException;
 import com.example.demo.model.exceptions.InvalidUserPromptException;
@@ -22,15 +28,24 @@ import com.example.demo.model.exceptions.InvalidUserPromptException;
 public class RecipeController {
 
     @Autowired
-    private ChefAgent chefAgent;
+    private Agent chefAgent;
 
-    @GetMapping()
-    public ResponseEntity<Map<String, Object>> hello() {
+    @PostMapping()
+    public ResponseEntity<Map<String, Object>> requestRecipe(@RequestBody String request) {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            String jsonResponse = chefAgent.get_receipts("Quem foi o campeão da Copa do mundo de 2002?");
-            List<Recipe> recipes = JsonParsing.parseJson(jsonResponse, Recipe.class);
+            FilterManager manager = new FilterManagerImpl(
+                    List.of(new RecipeFilter(request)));
+
+            if (!manager.applyFilters()) {
+                response.put("error_message", "Prompt não condiz com o propósito do modelo");
+                response.put("content", null);
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            String jsonResponse = chefAgent.get_receipts(request);
+            List<Recipe> recipes = JsonParsing.parseRecipe(jsonResponse, Recipe.class);
             response.put("error_message", "");
             response.put("content", recipes);
             return ResponseEntity.ok(response);

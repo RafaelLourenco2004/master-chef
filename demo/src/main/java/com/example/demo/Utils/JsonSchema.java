@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class JsonSchema {
 
-    public static Map<String, Object> RecipetSchema() {
+    public static Map<String, Object> getRecipetSchema() {
         Map<String, Object> lineSchema = Map.of(
                 "type", "object",
                 "properties", Map.of(
@@ -37,5 +37,22 @@ public class JsonSchema {
                 "schema", recipesSchema);
 
         return schema;
+    }
+
+    public static Map<String, Object> getFilterSchema(){
+        Map<String, Object> filterSchema = Map.of(
+                "name", "filter_schema",
+                "schema", Map.of(
+                        "type", "object",
+                        "properties", Map.of(
+                                "is_filtered", Map.of(
+                                        "type", "boolean"
+                                )
+                        ),
+                        "required", List.of("is_filtered"),
+                        "additionalProperties", false
+                )
+        );
+        return filterSchema;
     }
 }
