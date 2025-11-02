@@ -19,7 +19,7 @@ import com.example.demo.adapters.agents.Agent;
 import com.example.demo.adapters.filters.FilterManager;
 import com.example.demo.adapters.filters.FilterManagerImpl;
 import com.example.demo.adapters.filters.RecipeFilter;
-import com.example.demo.model.Recipe;
+import com.example.demo.model.dtos.RecipeDto;
 import com.example.demo.model.exceptions.InvalidApiResponseException;
 import com.example.demo.model.exceptions.InvalidUserPromptException;
 
@@ -40,26 +40,26 @@ public class RecipeController {
 
             if (!manager.applyFilters()) {
                 response.put("error_message", "Prompt não condiz com o propósito do modelo");
-                response.put("content", null);
+                // response.put("content", null);
                 return ResponseEntity.badRequest().body(response);
             }
 
             String jsonResponse = chefAgent.get_receipts(request);
-            List<Recipe> recipes = JsonParsing.parseRecipe(jsonResponse, Recipe.class);
-            response.put("error_message", "");
+            List<RecipeDto> recipes = JsonParsing.parseRecipe(jsonResponse, RecipeDto.class);
+            // response.put("error_message", "");
             response.put("content", recipes);
             return ResponseEntity.ok(response);
         } catch (InvalidUserPromptException e) {
             response.put("error_message", e.getMessage());
-            response.put("content", null);
+            // response.put("content", null);
             return ResponseEntity.badRequest().body(response);
         } catch (InvalidApiResponseException e) {
             response.put("error_message", e.getMessage());
-            response.put("content", null);
+            // response.put("content", null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } catch (Exception e) {
             response.put("error_message", "Algo deu errado");
-            response.put("content", null);
+            // response.put("content", null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
