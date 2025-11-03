@@ -32,11 +32,14 @@ public class RecipeLine {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    // public RecipeLine(String ingredient, Double amount, String unit) {
-    //     // this.recipeLineId = UUID.randomUUID();
-    //     this.ingredient = ingredient;
-    //     this.amount = amount;
-    //     this.unit = unit;
-    // }
+    public RecipeLine(String ingredient, Double amount, String unit) {
+        this.ingredient = ingredient;
+        this.amount = amount;
+        this.unit = unit;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 
 }

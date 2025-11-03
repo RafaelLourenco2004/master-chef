@@ -9,4 +9,5 @@ import com.example.demo.data.entities.User;
 public interface UserRepositoryI extends JpaRepository<User, UUID>{
  
     boolean existsByLogin(String login);
+    User findUserByLogin(String login);
 }

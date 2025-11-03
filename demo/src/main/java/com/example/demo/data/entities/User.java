@@ -1,5 +1,6 @@
 package com.example.demo.data.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-// @Builder
 public class User {
 
     @Id
@@ -31,13 +30,17 @@ public class User {
     private String login;
     private String password;
     private String name;
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE })
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Recipe> recipes;
 
     public User(String login, String password, String name) {
-        // this.userId = UUID.randomUUID();
         this.login = login;
         this.password = password;
         this.name = name;
+        this.recipes = new ArrayList<>();
+    }
+
+    public void addRecipe(Recipe recipe) {
+        recipes.add(recipe);
     }
 }

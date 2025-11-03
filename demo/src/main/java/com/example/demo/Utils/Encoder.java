@@ -8,7 +8,7 @@ public class Encoder {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public static boolean verify(String password) {
-        return BCrypt.checkpw(password, encode(password));
+    public static boolean verify(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
     }
 }

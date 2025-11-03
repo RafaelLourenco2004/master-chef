@@ -1,7 +1,10 @@
 package com.example.demo.data.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.example.demo.model.dtos.RecipeLineDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +26,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Recipe {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "recipe_id")
@@ -34,4 +37,18 @@ public class Recipe {
     private User user;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeLine> lines;
+
+    public Recipe(String name, List<RecipeLineDto> recipesDto) {
+        this.name = name;
+        this.lines = new ArrayList<>();
+        recipesDto.stream().forEach(recipeDto -> {
+            RecipeLine line = new RecipeLine(recipeDto.getIngredient(), recipeDto.getAmount(), recipeDto.getUnit());
+            line.setRecipe(this);
+            lines.add(line);
+        });
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -21,7 +21,7 @@ public class SignUpUseCase {
             throw new LoginAlreadyExistsException(message);
         }
 
-        User user = new User(userDto.getLogin(), userDto.getPassword(), userDto.getName());
+        User user = new User(userDto.getLogin(), Encoder.encode(userDto.getPassword()), userDto.getName());
         User newUser = userRepository.createUser(user);
 
         return UserDto.builder()
