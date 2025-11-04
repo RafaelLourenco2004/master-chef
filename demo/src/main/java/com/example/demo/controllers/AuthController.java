@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.auth.AuthRequest;
-import com.example.demo.auth.Authentication;
 import com.example.demo.auth.exceptions.UnmatchingUserCredentialsException;
+import com.example.demo.auth.services.AuthService;
 import com.example.demo.model.dtos.UserDto;
 import com.example.demo.model.exceptions.EntityNotFoundException;
 import com.example.demo.model.exceptions.LoginAlreadyExistsException;
@@ -30,7 +30,7 @@ public class AuthController {
     private SignUpUseCase signUp;
 
     @Autowired
-    private Authentication auth;
+    private AuthService auth;
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signUp(@Valid @RequestBody UserDto user) {

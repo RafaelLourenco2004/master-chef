@@ -1,26 +1,24 @@
-package com.example.demo.auth;
+package com.example.demo.auth.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Utils.Encoder;
-import com.example.demo.auth.entities.Session;
+import com.example.demo.auth.AuthRequest;
 import com.example.demo.auth.exceptions.UnmatchingUserCredentialsException;
 import com.example.demo.data.entities.User;
-import com.example.demo.data.repositories.AuthRepository;
 import com.example.demo.data.repositories.UserRepository;
 
 import com.example.demo.model.exceptions.EntityNotFoundException;
 
 @Service
-public class Authentication {
+public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private AuthRepository authRepository;
-
+    private SessionService sessionService;
     @Autowired
     private AuthTokenService authTokenService;
 
@@ -37,13 +35,8 @@ public class Authentication {
             throw new UnmatchingUserCredentialsException("Senha incorreta");
 
         String newToken = authTokenService.generateToken();
-        createSession(newToken);
-        
-        return newToken;
-    }
+        sessionService.createSession(newToken);
 
-    private void createSession(String token){
-        Session session = new Session(token);
-        authRepository.createSession(session);
+        return newToken;
     }
 }
