@@ -1,6 +1,7 @@
 package com.example.demo.auth.security;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,21 +43,15 @@ public class RequestFilter implements Filter {
             return;
         }
 
-        try {
-            Session session = sessionService.getSession(token);
+        Optional<Session> session = sessionService.getSession(token);
 
-            if (sessionService.hasSessionExpired(session)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("A seção expirou");
-                return;
-            }
-
-            arg2.doFilter(request, response);
-        } catch (Exception e) {
-            arg2.doFilter(request, response);
+        if (!session.isPresent() || sessionService.hasSessionExpired(session.get())) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token de autentificação invalido");
             return;
         }
 
+        arg2.doFilter(request, response);
     }
 
 }

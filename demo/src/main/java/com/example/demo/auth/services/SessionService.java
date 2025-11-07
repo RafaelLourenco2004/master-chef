@@ -22,24 +22,21 @@ public class SessionService {
         repository.createSession(session);
     }
 
-    public Session getSession(String token) throws InvalidAuthenticationTokenException {
-        Optional<Session> session = repository.getSession(token);
-        if (!session.isPresent())
-            throw new InvalidAuthenticationTokenException("Token de autentificação invalido");
-        return session.get();
+    public Optional<Session> getSession(String token){
+        return repository.getSession(token);
     }
 
     public boolean hasSessionExpired(Session session) {
         LocalDateTime createdAt = session.getCreatedAt();
-        Duration diff = Duration.between(LocalDateTime.now(), createdAt);
+        Duration diff = Duration.between(createdAt, LocalDateTime.now());
         if (diff.toMinutes() >= 2) {
-            deleteSession(session.getToken());
+            deleteSession(session);
             return true;
         }
         return false;
     }
 
-    private void deleteSession(String token) {
-        repository.deleteSession(null);
+    private void deleteSession(Session session) {
+        repository.deleteSession(session);
     }
 }
