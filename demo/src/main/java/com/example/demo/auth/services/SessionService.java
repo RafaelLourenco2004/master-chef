@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.auth.entities.Session;
-import com.example.demo.auth.exceptions.InvalidAuthenticationTokenException;
 import com.example.demo.data.repositories.SessionRepository;
 
 @Service

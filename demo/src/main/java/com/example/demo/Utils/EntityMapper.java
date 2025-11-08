@@ -19,4 +19,8 @@ public class EntityMapper {
         RecipeDto recipeDto = new RecipeDto(recipe.getName(), linesDto);
         return recipeDto;
     }
+
+    public static List<RecipeDto> toRecipeDtos(List<Recipe> recipes) {
+        return recipes.stream().map(EntityMapper::toRecipeDto).toList();
+    }
 }

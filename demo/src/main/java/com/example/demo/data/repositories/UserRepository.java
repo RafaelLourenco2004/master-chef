@@ -29,6 +29,10 @@ public class UserRepository {
         return repository.findUserByLogin(login);
     }
 
+    public Optional<User> getUserById(UUID id){
+        return repository.findById(id);
+    }
+
     public List<Recipe> saveUserRecipe(UUID userId, Recipe recipe) {
         Optional<User> userOp = repository.findById(userId);
         if (!userOp.isPresent())

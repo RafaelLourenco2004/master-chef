@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Utils.EntityMapper;
 import com.example.demo.auth.AuthRequest;
 import com.example.demo.auth.exceptions.UnmatchingUserCredentialsException;
 import com.example.demo.auth.services.AuthService;
+import com.example.demo.data.entities.User;
+import com.example.demo.data.repositories.UserRepository;
 import com.example.demo.model.dtos.UserDto;
 import com.example.demo.model.exceptions.EntityNotFoundException;
 import com.example.demo.model.exceptions.LoginAlreadyExistsException;
@@ -31,6 +34,9 @@ public class AuthController {
 
     @Autowired
     private AuthService auth;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signUp(@Valid @RequestBody UserDto user) {
@@ -50,9 +56,15 @@ public class AuthController {
         Map<String, Object> response = new HashMap<>();
         try {
             String authToken = auth.getAuthenticationToken(request);
+            User user = userRepository.getUserByLogin(request.getLogin());
+            response.put("user", new UserDto(
+                    user.getUserId(),
+                    user.getLogin(),
+                    user.getName(),
+                    EntityMapper.toRecipeDtos(user.getRecipes())));
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken)
-                    .body(null);
+                    .body(response);
         } catch (EntityNotFoundException e) {
             response.put("error_message", e.getMessage());
             return ResponseEntity.badRequest().body(response);

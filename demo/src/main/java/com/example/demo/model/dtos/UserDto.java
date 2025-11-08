@@ -33,4 +33,11 @@ public class UserDto {
 
     @JsonProperty(access = Access.READ_ONLY)
     private List<RecipeDto> recipes;
+
+    public UserDto(UUID id, String login, String name, List<RecipeDto> recipes) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.recipes = recipes;
+    }
 }
