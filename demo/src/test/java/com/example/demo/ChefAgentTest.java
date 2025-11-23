@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.adapters.agents.ChefAgent;
 import com.squareup.okhttp.OkHttpClient;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+
+import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 class ChefAgentTest {
 
