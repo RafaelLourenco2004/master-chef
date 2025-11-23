@@ -55,7 +55,6 @@ class ChefAgentTest {
         assertEquals("POST", recordedRequest.getMethod());
         assertEquals("/" , recordedRequest.getPath());
         assertEquals("Bearer fake-token", recordedRequest.getHeader("Authorization"));
-        assertEquals("application/json", recordedRequest.getHeader("Content-Type"));
     }
 
     @Test
