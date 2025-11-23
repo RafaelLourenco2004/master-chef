@@ -17,13 +17,19 @@ import com.squareup.okhttp.Response;
 @Service
 public class ChefAgent implements Agent {
 
-    private final String TOKEN = System.getenv("TOKEN");
-    private final String URL = System.getenv("URL");
+    private String token;
+    private String url;
    
     private OkHttpClient client;
 
     public ChefAgent() {
-        client = new OkHttpClient();
+        this(System.getenv("TOKEN"), System.getenv("URL"), new OkHttpClient());
+    }
+
+    public ChefAgent(String token, String url, OkHttpClient client) {
+        this.token = token;
+        this.url = url;
+        this.client = client;
     }
 
     @Override
@@ -42,8 +48,8 @@ public class ChefAgent implements Agent {
         String requestBody = mapper.writeValueAsString(body);
 
         Request request = new Request.Builder()
-            .url(URL)
-            .addHeader("Authorization", "Bearer " + TOKEN)
+            .url(url)
+            .addHeader("Authorization", "Bearer " + token)
             .addHeader("Content-Type", "application/json")
             .post(RequestBody.create(MediaType.parse("application/json"), requestBody))
             .build();
