@@ -10,13 +10,17 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './mvnw clean package -DskipTests=false'
+                dir ('demo'){
+                    sh './mvnw clean package -DskipTests=false'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh './mvnw test'
+                dir ('demo'){
+                    sh './mvnw test'
+                }
             }
         }
     }
